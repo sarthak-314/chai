@@ -17,3 +17,4 @@
 - Hidden Layer
 - add_dropout(), ...
 - pass word count length and context len to bert somehow
+- I am very burnt out. Once I get to the top, I'll take a one week sabbatical and cleansing

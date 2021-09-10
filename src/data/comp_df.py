@@ -57,7 +57,5 @@ def build_uniform_negative(df, min_paragraph_len=128):
     negative['answer_text'] = ''
     negative['answer_start'] = 0
 
-    del negative['context_with_token']
-    del negative['org_context']
     del negative['negative_p']
     return negative
