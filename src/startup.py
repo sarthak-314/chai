@@ -19,12 +19,17 @@ import pickle
 import random
 import json
 import cv2
+import sys
 import gc
 import os
 
 import tensorflow as tf
 import torch
 
+sys.path += [
+    '/kaggle/working/chai', 
+    '/content/chai', 
+]
 import src 
 import src.utils
 from src.utils.core import *
