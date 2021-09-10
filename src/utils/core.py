@@ -3,6 +3,14 @@ from pathlib import Path
 import torch 
 import os 
 
+
+# Colors
+red = lambda str: colored(str, 'red')
+blue = lambda str: colored(str, 'blue')
+green = lambda str: colored(str, 'green')
+yellow = lambda str: colored(str, 'yellow')
+
+
 # Solve Environment, Hardware & Online Status
 def _solve_env(): 
     if 'KAGGLE_CONTAINER_NAME' in os.environ: 
@@ -60,8 +68,3 @@ if ENV == 'Colab':
     _mount_drive()
 
 
-# Termcolor Colors
-red = lambda str: colored(str, 'red')
-blue = lambda str: colored(str, 'blue')
-green = lambda str: colored(str, 'green')
-yellow = lambda str: colored(str, 'yellow')
