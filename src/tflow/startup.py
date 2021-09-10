@@ -4,7 +4,7 @@ import tensorflow as tf
 from termcolor import colored 
 from pathlib import Path
 
-from src.utils.core import WORKING_DIR
+from src.utils.core import WORKING_DIR, ENV
 
 AUTO = { 'num_parallel_calls': tf.data.AUTOTUNE }
 TB_DIR = WORKING_DIR / 'tb-logs'
@@ -41,6 +41,10 @@ def tf_accelerator(bfloat16, jit_compile):
     except ValueError:
         strategy = tf.distribute.get_strategy()
     print(f"Running on {strategy.num_replicas_in_sync} replicas")
+    
+    if ENV == 'CPU': 
+        print('CPU detected. Skipping mixed precision and jit compilation')
+        return strategy
     
     if bfloat16: 
         _enable_mixed_precision()
