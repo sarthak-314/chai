@@ -68,14 +68,11 @@ def _setup_jupyter_notebook():
         print('could not load ipython magic extensions')
 _setup_jupyter_notebook()
 
+def _ignore_deprecation_warnings(): 
+    warnings.filterwarnings("ignore", category=DeprecationWarning) 
+_ignore_deprecation_warnings()
 
 # Startup Notebook Functions
-def ignore_warnings(should_ignore): 
-    if should_ignore: 
-        warnings.filterwarnings('ignore')
-    else: 
-        warnings.filterwarnings("ignore", category=DeprecationWarning) 
-
 REPO_PATH = 'https://github.com/sarthak-314/chai'
 def sync(): 
     'Sync Notebook with VS Code'
