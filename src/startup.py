@@ -4,6 +4,8 @@ Startup script to run in the beggining of every Jupyter Notebook
 - Import common functions & classes
 - Define important paths & constants
 """
+from __future__ import absolute_import
+
 # Commonly Used Libraries
 from IPython.display import clear_output 
 from functools import partial
