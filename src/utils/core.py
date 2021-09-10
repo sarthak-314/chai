@@ -13,7 +13,7 @@ blue = lambda str: colored(str, 'blue')
 green = lambda str: colored(str, 'green')
 yellow = lambda str: colored(str, 'yellow')
 
-class Hparams(defaultdict): 
+class HParams(defaultdict): 
     def __init__(self, base_dict={}): 
         super().__init__()
         self._add_base_dict_to_self(base_dict)
