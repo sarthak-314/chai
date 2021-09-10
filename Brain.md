@@ -1,3 +1,7 @@
+- Use different question generation strategies
+- If question generation succeeds, try context expansion
+- Generating qa from hi-ta wikipedia with MT5-XXL might be super useful. 
+
 - If you can cut the time to load data and the time for first epoch, you can run many many many experiments blazingly fast
 - Team up with 4 people early and tell them to run the long time TPU code. This way you get 150 legit + 60 non legit hours / week
 - Maybe local works slow because TPU reads from GCS bucket better
@@ -13,4 +17,3 @@
 - Hidden Layer
 - add_dropout(), ...
 - pass word count length and context len to bert somehow
- 

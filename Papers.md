@@ -1,3 +1,8 @@
+# Transformer-based End-to-End Question Generation
+- not sota
+- 
+
+
 # TANDA (WikiQA winner)
 TANDA: Transfer and Adapt Pre-Trained Transformer Models
 for Answer Sentence Selection
@@ -38,3 +43,4 @@ Select the wikipedia articles for generation
 
 # SpanBERT 
 - pretraining method to better predict spans
+
