@@ -42,7 +42,6 @@ def tf_accelerator(bfloat16, jit_compile):
         strategy = tf.distribute.get_strategy()
     print(f"Running on {strategy.num_replicas_in_sync} replicas")
     
-    print('HARWARE: ', HARDWARE)
     if HARDWARE is 'CPU': 
         print('CPU detected. Skipping mixed precision and jit compilation')
         return strategy
@@ -55,6 +54,15 @@ def tf_accelerator(bfloat16, jit_compile):
 
 
 # Common Notebook Functions
+def restart_tpu(): 
+    pass
+
+def delete_model_from_tpu(model): 
+    import gc
+    del model
+    gc.collect()
+
+
 def save_weights(model, filepath):
     filepath = str(filepath)
     print('Saving model weights at', colored(filepath, 'blue'))

@@ -40,3 +40,4 @@ I think hardware is still my biggest bottleneck. I will use the money I won from
 - Burnout: Burnout is real and it kills creativity. I have found if I take some time off to relax and catch up on sleep, I come up with much better ideas. 
 - 
 
+I am not open sourcing the full repo because I don't want to lose my competive advantage in the future NLP competitions. 

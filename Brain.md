@@ -1,3 +1,4 @@
+- Use wiki ner embeddings
 - Use different question generation strategies
 - If question generation succeeds, try context expansion
 - Generating qa from hi-ta wikipedia with MT5-XXL might be super useful. 
@@ -18,3 +19,7 @@
 - add_dropout(), ...
 - pass word count length and context len to bert somehow
 - I am very burnt out. Once I get to the top, I'll take a one week sabbatical and cleansing
+
+FUTURE 
+- Write a long post, by gstars
+- Win this competition in the first place by a landslide and use it to get a kickass dl job. In the end, a great Kaggle project and some actual experimece and money. Plus I can be a grandmaster just by targeting NLP competitions, 

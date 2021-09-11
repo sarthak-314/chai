@@ -13,7 +13,7 @@ blue = lambda str: colored(str, 'blue')
 green = lambda str: colored(str, 'green')
 yellow = lambda str: colored(str, 'yellow')
 
-class HParams(defaultdict): 
+class HP(defaultdict): 
     def __init__(self, base_dict={}): 
         super().__init__()
         self._add_base_dict_to_self(base_dict)
@@ -37,7 +37,7 @@ class HParams(defaultdict):
         res = '\n'
         for key, value in self.items(): 
             k, v = str(key)[:512], str(value)[:512]
-            if isinstance(value, Hparams): 
+            if isinstance(value, HP): 
                 space = min(8, len(k)+1)
                 v = v.replace('\n', '\n' + ' '*space)
                 k = '\n' + colored(k, dict_key_color, attrs=['bold'])
@@ -99,7 +99,7 @@ def _solve_online_status():
 ENV = _solve_env()
 HARDWARE = _solve_hardware()
 IS_ONLINE = _solve_online_status()
-print('Notebook running on', colored(ENV, 'blue'), 'on ', colored(HARDWARE, 'blue'))
+print('Notebook running on', colored(ENV, 'blue'), 'on', colored(HARDWARE, 'blue'))
 
 
 # Useful Paths for each environment
