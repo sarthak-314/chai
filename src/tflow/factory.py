@@ -23,7 +23,7 @@ def optimizer_factory(optimizer_kwargs, lr_scheduler):
             amsgrad=False, 
             clipnorm=optimizer_kwargs['max_grad_norm'], 
             epsilon=optimizer_kwargs['epsilon'], 
-            beta_2=optimizer_kwargs['beta2'], 
+            beta_2=optimizer_kwargs['beta_2'], 
         )
     elif optimizer_name == 'Adagrad': 
         optimizer = tf.keras.optimizers.Adagrad(
