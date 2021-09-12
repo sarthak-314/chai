@@ -18,7 +18,7 @@ def optimizer_factory(optimizer_kwargs, lr_scheduler):
     optimizer_name = optimizer_kwargs['name']
     if optimizer_name == 'AdamW': 
         optimizer = tfa.optimizers.AdamW(
-            weight_decay=optimizer_kwargs['weight_decay'],
+            weight_decay=optimizer_kwargs['wd'],
             learning_rate=lr_scheduler,  
             amsgrad=False, 
             clipnorm=optimizer_kwargs['max_grad_norm'], 
