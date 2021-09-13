@@ -1,7 +1,5 @@
 # Transformer-based End-to-End Question Generation
 - not sota
-- 
-
 
 # TANDA (WikiQA winner)
 TANDA: Transfer and Adapt Pre-Trained Transformer Models

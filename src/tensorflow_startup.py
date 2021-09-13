@@ -1,10 +1,14 @@
-import tensorflow_addons as tfa
+# Try to install tensorflow_addons if not already installed in the notebook. TODO: Is this the best way to do this?
+try: 
+    import tensorflow_addons as tfa 
+except: 
+    print('tensorflow_addons not found. Trying to install tensorflow_addons')
+    import os
+    os.system('pip install tensorflow_addons')
+
 import tensorflow as tf
-
-from termcolor import colored 
-from pathlib import Path
-
 from src.utils.core import HARDWARE, WORKING_DIR
+from src.tensorflow_factory import lr_scheduler_factory, optimizer_factory, callbacks_factory
 
 AUTO = { 'num_parallel_calls': tf.data.AUTOTUNE }
 TB_DIR = WORKING_DIR / 'tb-logs'
@@ -12,17 +16,17 @@ TB_DIR = WORKING_DIR / 'tb-logs'
 # Startup Functions
 def _enable_mixed_precision(): 
     """
-    Can sometimes lead to poor / unstable convergence
+    - TODO: Disable when finetuning because "it can sometimes lead to poor / unstable convergence" ??
     """
     policy = tf.keras.mixed_precision.experimental.Policy('mixed_bfloat16')
     tf.keras.mixed_precision.experimental.set_policy(policy)
 
 def set_jit_compile(enable_jit=True):
     """
-    - When using dynamic sizes, compile time can add up
+    https://docs.nvidia.com/deeplearning/frameworks/tensorflow-user-guide/index.html
+    - Don't use variable sizes with TPU. Compile time adds up
     - Uses extra memory
     - Don't use for short scripts
-    https://docs.nvidia.com/deeplearning/frameworks/tensorflow-user-guide/index.html
     """
     if enable_jit:  
         print('Using JIT compilation')
@@ -54,20 +58,6 @@ def tf_accelerator(bfloat16, jit_compile):
 
 
 # Common Notebook Functions
-def restart_tpu(): 
-    pass
-
-def delete_model_from_tpu(model): 
-    import gc
-    del model
-    gc.collect()
-
-
-def save_weights(model, filepath):
-    filepath = str(filepath)
-    print('Saving model weights at', colored(filepath, 'blue'))
-    model.save_weights(filepath)
-
 def get_gcs_path(dataset_name): 
     from kaggle_datasets import KaggleDatasets
     return KaggleDatasets().get_gcs_path(dataset_name)

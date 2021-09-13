@@ -1,9 +1,37 @@
-- Use wiki ner embeddings
+
+
+
+
+# Post Processing 
+- Progressive Pruning: remove definatlely not answer after prediction with each model
+- GoldS Pseduo labelling 
+-  In case of multiple possible answers, incentevise the model to select the first sentence. Sentences should be in the same order as they appear, 
+- Two Step: Answer Sentence selection -> answer text selection. 
+
+
+# Other
+- LB Probing for Wikipedia Indexes (TFIDF)
+
+# Data Expansion
 - Use different question generation strategies
 - If question generation succeeds, try context expansion
 - Generating qa from hi-ta wikipedia with MT5-XXL might be super useful. 
 
+# Pre-Pre Training 
+- Use wiki ner embeddings
+Finetuning
+
+# Training
 - If you can cut the time to load data and the time for first epoch, you can run many many many experiments blazingly fast
+
+# Finetuning
+- Finetuning with lower context length, higher doc stride
+
+Post Processing
+Other 
+
+
+
 - Team up with 4 people early and tell them to run the long time TPU code. This way you get 150 legit + 60 non legit hours / week
 - Maybe local works slow because TPU reads from GCS bucket better
 - cloud-tpu-tools

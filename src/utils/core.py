@@ -1,3 +1,12 @@
+"""
+Core constants, classes and functions that can be used in other modules
+- HP: dict wrapper for HyperParameters 
+- colors: color code print messages
+
+
+"""
+
+
 from collections import defaultdict 
 from termcolor import colored
 from pathlib import Path
@@ -14,6 +23,10 @@ green = lambda str: colored(str, 'green')
 yellow = lambda str: colored(str, 'yellow')
 
 class HP(defaultdict): 
+    """
+    dict wrapper for HyperParameters 
+    TODO: Don't be a perfectionist. Effort put in this was not worth it
+    """
     def __init__(self, base_dict={}): 
         super().__init__()
         self._add_base_dict_to_self(base_dict)
@@ -113,20 +126,3 @@ elif ENV == 'Kaggle':
 else: 
     WORKING_DIR = Path('C:/Users/sarth/Desktop/chai')
     TMP_DIR = WORKING_DIR / 'tmp'
-
-# Check if repo is loaded correctly
-def _ensure_repo_dir_is_correct(): 
-    if ENV == 'Kaggle': 
-        assert Path('/kaggle/working/chai').exists(), red('Wrong Repo Directory')
-    elif ENV == 'Colab': 
-        assert Path('/content/chai').exists(), red('Wrong Repo Directory')
-_ensure_repo_dir_is_correct()
-    
-# Mount Drive in Colab
-def _mount_drive(): 
-    from google.colab import drive
-    drive.mount('/content/drive')
-if ENV == 'Colab': 
-    _mount_drive()
-
-

@@ -1,10 +1,53 @@
+import tensorflow_addons as tfa
+import tensorflow as tf
+
+from termcolor import colored 
 from pathlib import Path
-import tensorflow as tf 
-import datetime
 import os
 
+def lr_scheduler_factory(lr_scheduler_kwargs): 
+    if isinstance(lr_scheduler_kwargs, float): 
+        print(colored('Using constant learning rate', 'yellow'))
+        return lr_scheduler_kwargs
+    lr_scheduler = tfa.optimizers.ExponentialCyclicalLearningRate(
+        initial_learning_rate=lr_scheduler_kwargs['init_lr'], 
+        maximal_learning_rate=lr_scheduler_kwargs['max_lr'], 
+        step_size=lr_scheduler_kwargs['step_size'], 
+        gamma=lr_scheduler_kwargs['gamma'], 
+    )
+    return lr_scheduler
+
+
+def optimizer_factory(optimizer_kwargs, lr_scheduler): 
+    optimizer_name = optimizer_kwargs['name']
+    if optimizer_name == 'AdamW': 
+        optimizer = tfa.optimizers.AdamW(
+            weight_decay=optimizer_kwargs['wd'],
+            learning_rate=lr_scheduler,  
+            amsgrad=False, 
+            clipnorm=optimizer_kwargs['max_grad_norm'], 
+            epsilon=optimizer_kwargs['epsilon'], 
+            beta_2=optimizer_kwargs['beta_2'], 
+        )
+    elif optimizer_name == 'Adagrad': 
+        optimizer = tf.keras.optimizers.Adagrad(
+            learning_rate=lr_scheduler, 
+        )
+        print('Skipping weight decay for Adagrad')
+    if optimizer_kwargs['use_lookahead']: 
+        print(colored('Using Lookahead', 'red'))
+        optimizer = tfa.optimizers.Lookahead(optimizer)
+    if optimizer_kwargs['use_swa']: 
+        print(colored('Using SWA', 'red'))
+        optimizer = tfa.optimizers.SWA(optimizer)
+    return optimizer
+
+#############################
+##### Callbacks Factory #####
+#############################
 
 def get_model_checkpoint_callback(checkpoint_dir, checkpoint_file, common_kwargs):
+    # 'checkpoint-{epoch:02d}-{val_loss:.4f}.h5'
     print(f'Saving model checkpoints at {checkpoint_dir}/{checkpoint_file}')
     checkpoint_dir = Path(checkpoint_dir)
     if not checkpoint_dir.exists(): 
@@ -50,11 +93,11 @@ def get_reduce_lr_on_plateau(patience, factor, common_kwargs):
         **common_kwargs, 
     )
     
-def tqdm_bar(): 
+def get_tqdm_bar_callback(): 
     import tensorflow_addons as tfa
     return tfa.callbacks.TQDMProgressBar()
 
-def terminate_on_nan(): 
+def get_terminate_on_nan_callback(): 
     return tf.keras.callbacks.TerminateOnNaN()
 
 def make_callbacks_list(model, callbacks): 
@@ -66,19 +109,23 @@ def make_callbacks_list(model, callbacks):
     )
 
 def callbacks_factory(callbacks): 
+    # TODO: Add Tensorboard to callbacks
     callbacks_list = [
-        get_model_checkpoint_callback(
-            callbacks.checkpoint_dir, callbacks.checkpoint_file, callbacks.common_kwargs, 
-        ), 
-        get_early_stopping_callback(callbacks.early_stop, callbacks.common_kwargs), 
-        get_time_stopping_callback(callbacks.max_train_hours), 
-        get_reduce_lr_on_plateau(
-            callbacks.reduce_lr_patience, callbacks.reduce_lr_factor, callbacks.common_kwargs
-        ), 
+        get_model_checkpoint_callback(callbacks.checkpoint_dir, callbacks.checkpoint_file, callbacks.common_kwargs)
     ]
-    if callbacks.wandb_callback: 
-        wandb_callback = get_wandb_callback(callbacks.common_kwargs)
-        callbacks_list.append(wandb_callback)
+    if 'early_stop' in callbacks: 
+        callbacks_list.append(get_early_stopping_callback(callbacks.early_stop, callbacks.common_kwargs))
+    if 'max_train_hours' in callbacks: 
+        callbacks_list.append(get_time_stopping_callback(callbacks.max_train_hours))
+    if 'reduce_lr_patience' in callbacks: 
+        callbacks_list.append(
+        get_reduce_lr_on_plateau(callbacks.reduce_lr_patience, callbacks.reduce_lr_factor, callbacks.common_kwargs)) 
+    if 'wandb_callback' in callbacks and callbacks.wandb_callback: 
+        callbacks_list.append(get_wandb_callback(callbacks.common_kwargs))
+    if 'use_tqdm_bar' in callbacks and callbacks.use_tqdm_bar: 
+        callbacks_list.append(get_tqdm_bar_callback())
+    if 'terminate_on_nan' in callbacks and callbacks.terminate_on_nan: 
+        callbacks_list.append(get_terminate_on_nan_callback())
     return callbacks_list     
 
 def get_save_locally(): 
@@ -86,6 +133,8 @@ def get_save_locally():
 
 def get_load_locally(): 
     return tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
+
+
 
 # def tb(tb_dir, train_steps): 
 #     start_profile_batch = train_steps+10
@@ -97,28 +146,6 @@ def get_load_locally():
 #         profile_batch=profile_range, 
 #     )
 #     return tensorboard_callback
-
-# def checkpoint(checkpoint_dir=None):
-#     # checkpoint_filepath = 'checkpoint-{epoch:02d}-{val_loss:.4f}.h5'
-#     checkpoint_filepath = 'checkpoint.h5'
-#     if checkpoint_dir is not None: 
-#         os.makedirs(checkpoint_dir, exist_ok=True)
-#         checkpoint_filepath = checkpoint_dir / checkpoint_filepath
-#     return tf.keras.callbacks.ModelCheckpoint(
-#         filepath=checkpoint_filepath,
-#         save_weights_only=True,
-#         save_best_only=True, 
-#         **common_kwargs, 
-#     )
-
-# def early_stop(patience=3):
-#     return tf.keras.callbacks.EarlyStopping(
-#         patience=patience, 
-#         restore_best_weights=True, 
-#         **common_kwargs,
-#     )
-
-
 
 # def tensorboard_callback(log_dir):
 #     os.makedirs(log_dir, exist_ok=True)

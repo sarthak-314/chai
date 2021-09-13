@@ -1,6 +1,16 @@
-# REMBERT 
+# CURRENT RUNS 
+__Fixed__
 
- - High dropout gave much worse results
+__Kaggle__
+
+__Yash__
+
+__Harshit__
+
+
+
+# REMBERT 
+- High dropout gave much worse results
 - High weight decay gave bad results but it was due to high lr
 - Comp gold performed better than comp clean / comp original
 
