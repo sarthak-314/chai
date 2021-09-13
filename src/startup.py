@@ -49,7 +49,6 @@ import warnings
 import shutil
 import math
 import glob
-import sys
 
 # Jupyter Notebook Setup
 def _setup_jupyter_notebook(): 
@@ -74,9 +73,9 @@ REPO_PATH = 'https://github.com/sarthak-314/chai'
 def sync(): 
     # TODO: Do everything locally once you get a GPU
     'Sync Notebook with VS Code'
-    os.chdir(WORKING_DIR/'temp')
+    os.chdir(WORKING_DIR/'chai')
     subprocess.run(['git', 'pull'])
-    sys.path.append(str(WORKING_DIR/'temp'))
+    sys.path.append(str(WORKING_DIR/'chai'))
     os.chdir(WORKING_DIR)
 
 def clone_repo(repo_url): 
@@ -87,6 +86,22 @@ def clone_repo(repo_url):
     os.chdir(clone_dir)
     sys.path.append(clone_dir)
     print(f'Repo {repo_url} cloned')    
+
+# Check if repo is loaded correctly
+def _ensure_repo_dir_is_correct(): 
+    if ENV == 'Kaggle': 
+        assert Path('/kaggle/working/chai').exists(), red('Wrong Repo Directory')
+    elif ENV == 'Colab': 
+        assert Path('/content/chai').exists(), red('Wrong Repo Directory')
+_ensure_repo_dir_is_correct()
+    
+# Mount Drive in Colab
+def _mount_drive(): 
+    from google.colab import drive
+    drive.mount('/content/drive')
+    
+if ENV == 'Colab': 
+    _mount_drive()
 
 
 # Competition Specific Constants & Functions
