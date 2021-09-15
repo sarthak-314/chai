@@ -109,19 +109,6 @@ if ENV == 'Colab':
     _mount_drive()
 
 
-# Competition Specific Constants & Functions
-COMP_NAME = 'chaii-hindi-and-tamil-question-answering'
-DRIVE_DIR = Path('/content/drive/MyDrive/Chai')
-DF_DIR = {
-    'Kaggle': KAGGLE_INPUT_DIR/'chai-dataframes', 
-    'Colab': DRIVE_DIR/'Dataframes', 
-    'Local': Path('C:\\Users\\sarth\\Desktop\\chaiv3\\data')
-}[ENV]
-
-def get_word_len_tokens(word_lens): 
-    return [f'[WORD={word_len}]' for word_len in word_lens]
-def get_context_len_tokens(context_lens): 
-    return [f'[CONTEXT={context_len}]' for context_len in context_lens]
 
 # HYPERPARAMETERS 
 def heading(title, level=3):
@@ -158,3 +145,19 @@ def hyperparameters(line, cell):
     get_ipython().user_ns['HP'] = hyperparameters_config
     print('Hyperparameters loaded in the variable HP')
     display_hparams(hyperparameters_config)
+
+
+# Competition Specific Constants & Functions
+COMP_NAME = 'chaii-hindi-and-tamil-question-answering'
+DRIVE_DIR = Path('/content/drive/MyDrive/Chai')
+DF_DIR = {
+    'Kaggle': KAGGLE_INPUT_DIR/'chai-dataframes', 
+    'Colab': DRIVE_DIR/'Dataframes', 
+    'Local': Path('C:\\Users\\sarth\\Desktop\\chaiv3\\data')
+}[ENV]
+
+def get_special_tokens(word_counts, context_lengths): 
+    word_count_tokens = [f'[WORD={word_count}]' for word_count in word_counts]
+    context_length_tokens = [f'[CONTEXT={context_len}]' for context_len in context_lengths]
+    special_tokens = word_count_tokens + context_length_tokens
+    return special_tokens
