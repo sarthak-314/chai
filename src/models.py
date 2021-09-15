@@ -14,7 +14,7 @@ class QAModel(tf.keras.Model):
         self.backbone = backbone
         self.hidden_layer = hidden_layer
         self.concat_start_to_end = concat_start_to_end
-        if hidden_layer is not None: 
+        if hidden_layer and hidden_layer is not None: 
             print(red('Warning: Using Hidden Layer'))
             self.hidden_layer = tf.keras.Sequential([
                 tf.keras.layers.Dropout(dropout_rates.hidden_1),
