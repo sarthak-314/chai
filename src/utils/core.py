@@ -2,8 +2,6 @@
 Core constants, classes and functions that can be used in other modules
 - HP: dict wrapper for HyperParameters 
 - colors: color code print messages
-
-
 """
 
 

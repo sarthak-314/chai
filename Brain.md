@@ -1,4 +1,5 @@
 
+- Ponder Net sounds interesting
 
 
 
@@ -51,3 +52,4 @@ Other
 FUTURE 
 - Write a long post, by gstars
 - Win this competition in the first place by a landslide and use it to get a kickass dl job. In the end, a great Kaggle project and some actual experimece and money. Plus I can be a grandmaster just by targeting NLP competitions, 
+

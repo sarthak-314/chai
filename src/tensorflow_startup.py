@@ -16,7 +16,7 @@ TB_DIR = WORKING_DIR / 'tb-logs'
 # Startup Functions
 def _enable_mixed_precision(): 
     """
-    - TODO: Disable when finetuning because "it can sometimes lead to poor / unstable convergence" ??
+    - TODO: Disable when finetuning because it can sometimes lead to poor / unstable convergence ?
     """
     policy = tf.keras.mixed_precision.experimental.Policy('mixed_bfloat16')
     tf.keras.mixed_precision.experimental.set_policy(policy)

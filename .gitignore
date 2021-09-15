@@ -1,8 +1,14 @@
 notebooks/
+data/
+env/
+models/
+experiments/
+
+.env
 Brain.md 
 Experiments.md
 Papers.md
 Winning Post.md
-
-
+Rembert.md
+Ideas.md
 

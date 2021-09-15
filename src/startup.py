@@ -24,12 +24,16 @@ import sys
 import gc
 import os
 
+from omegaconf import OmegaConf
+import omegaconf
+
 import tensorflow as tf
 import torch
 
 sys.path += [
     '/kaggle/working/chai', 
     '/content/chai', 
+    'C:\\Users\\sarth\\Desktop\\chaiv3', 
 ]
 import src 
 import src.utils
@@ -39,10 +43,12 @@ from src.utils.core import *
 # Uncommonly Used Libraries
 from sklearn.utils.class_weight import compute_class_weight
 from sklearn.model_selection import train_test_split
+from IPython.display import display, Markdown
 from dataclasses import dataclass, asdict
 from distutils.dir_util import copy_tree
 from collections import defaultdict
 import matplotlib.pyplot as plt
+from IPython import get_ipython
 from PIL import Image
 import subprocess
 import warnings
@@ -53,7 +59,6 @@ import glob
 # Jupyter Notebook Setup
 def _setup_jupyter_notebook(): 
     from IPython.core.interactiveshell import InteractiveShell
-    from IPython import get_ipython
     InteractiveShell.ast_node_interactivity = 'all'
     ipython = get_ipython()
     try: 
@@ -109,5 +114,47 @@ COMP_NAME = 'chaii-hindi-and-tamil-question-answering'
 DRIVE_DIR = Path('/content/drive/MyDrive/Chai')
 DF_DIR = {
     'Kaggle': KAGGLE_INPUT_DIR/'chai-dataframes', 
-    'Colab': DRIVE_DIR/'Dataframes'
+    'Colab': DRIVE_DIR/'Dataframes', 
+    'Local': Path('C:\\Users\\sarth\\Desktop\\chaiv3\\data')
 }[ENV]
+
+def get_word_len_tokens(word_lens): 
+    return [f'[WORD={word_len}]' for word_len in word_lens]
+def get_context_len_tokens(context_lens): 
+    return [f'[CONTEXT={context_len}]' for context_len in context_lens]
+
+# HYPERPARAMETERS 
+def heading(title, level=3):
+    margin = 'margin-left:5px;'
+    try: 
+        text = title.title()
+        html = f"<h{level} style='text-align:center; {margin}'> {text} </h{level}> <hr/>" 
+        print()
+        display(Markdown(html))
+    except Exception as e: 
+        print(e)
+
+def display_hparams(hp): 
+    heading('Hyperparameters')
+    for key, value in hp.items(): 
+        if isinstance(value, omegaconf.dictconfig.DictConfig):
+            print()
+            print(colored(key, 'red', attrs=['bold']))
+            space = min(4, len(key)+1)
+            for k, v in value.items(): 
+                print(' '*space, colored(k+':', 'red'), colored(v, 'blue'))
+            print()
+        else:
+            print(colored(key+':', 'red'), colored(value, 'blue'))
+    
+from IPython.core.magic import register_line_cell_magic
+@register_line_cell_magic
+def hyperparameters(line, cell):
+    'Magic command to write hyperparameters into a yaml file and load it with hydra'
+    print(f'Writing the hyperparameters to {line}')
+    with open(line, 'w') as f:
+        f.write(cell.format(**globals()))
+    hyperparameters_config = OmegaConf.load(line)
+    get_ipython().user_ns['HP'] = hyperparameters_config
+    print('Hyperparameters loaded in the variable HP')
+    display_hparams(hyperparameters_config)

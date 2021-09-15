@@ -1,3 +1,26 @@
+# BEST HYPERPARAMETERS
+
+# Round 1: Pretraining All Languages
+data: All external data
+tokens+, concat+, neg_wt: 0.01, start wt: 1.5
+LR: (1e-10, 3e-5, 1), Epochs: 1, CPE: 4
+WD: 1e-6, dropout: 0 everywhere
+seq: 512, 256, min_para_len: 256
+
+
+# Round 2: Pretraining
+data: basic + mlqa-hi-translated + squad adversarial
+tokens+, concat+, neg_wt: 1e-3, start wt: 1.5
+LR: (1e-5, 3e-5, 1), Epochs: 1, CPE: 4
+WD: 1e-6, dropout: 0.01 for backbone, 0.05 for final layer
+seq: 512, 256, min_para_len: 128
+
+
+
+# Round 2: Pretraining 
+
+
+
 # ABOUT
 - finetuning for SQuAD: LR: 9e-6, batch size: 128, epochs: 3
 - does not use dropout to increase model capacity. Not using dropout gives better results

@@ -1,3 +1,16 @@
+
+# Super Convergence
+- Cyclic LR
+- Works better when less data is availible
+- Smith (2015) tested numerous ways to vary the learning rate between the two boundary values, found them to be equivalent and therefore recommended the simplest, which is letting the learning rate change linearly.
+
+
+
+
+# PonderNet
+- Adapts computation on the complexity of the problem 
+- 
+
 # Transformer-based End-to-End Question Generation
 - not sota
 

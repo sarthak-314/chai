@@ -49,3 +49,8 @@ I am not open sourcing the full repo because I don't want to lose my competive a
 I am a perfectionist and a hyper competitive person by nature. I either give my 100% or 0% to anything. I put so much thought and effort into this competition because I HAD to win this competition. The idea of even coming in 2nd was not enough. 
 
 Made it up by working at way below minimum wage
+
+Scaling out the software design: Ask abhisheak to make a video on it after winning? 
+- Thanks for your kind comments. Would you consider making a video on it? 
+Team up with Abhisheak and ask him to make a video on it later. Use it to jump start your YouTube career in Kaggle. 
+IDEA: YouTube Channel
