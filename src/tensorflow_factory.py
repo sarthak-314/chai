@@ -81,7 +81,7 @@ def get_wandb_callback(common_kwargs):
         monitor=common_kwargs['monitor'], 
         verbose=0, mode=common_kwargs['mode'], 
         save_weights_only=True, 
-        log_gradients=True, 
+        log_gradients=False, 
     )
 
 def get_reduce_lr_on_plateau(patience, factor, common_kwargs): 
