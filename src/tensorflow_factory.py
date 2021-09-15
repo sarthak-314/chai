@@ -75,14 +75,18 @@ def get_time_stopping_callback(max_train_hours):
     )
 
 def get_wandb_callback(common_kwargs):
-    # TODO: Add training data, or remove log grads
-    from wandb.keras import WandbCallback
-    return WandbCallback(
-        monitor=common_kwargs['monitor'], 
-        verbose=0, mode=common_kwargs['mode'], 
-        save_weights_only=True, 
-        log_gradients=False, 
-    )
+    try: 
+        # TODO: Add training data, or remove log grads
+        from wandb.keras import WandbCallback
+        return WandbCallback(
+            monitor=common_kwargs['monitor'], 
+            verbose=0, mode=common_kwargs['mode'], 
+        #     save_weights_only=True, 
+        #     log_gradients=False, 
+        )
+    except Exception as e: 
+        print('Skipping the wandb callback. Does fukng nit: ', e)
+    
 
 def get_reduce_lr_on_plateau(patience, factor, common_kwargs): 
     print(f'reducing lr by {factor} if metric does not improve within {patience} epochs')
