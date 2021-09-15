@@ -14,7 +14,7 @@ class QAModel(tf.keras.Model):
         self.backbone = backbone
         self.hidden_layer = hidden_layer
         self.concat_start_to_end = concat_start_to_end
-        if hidden_layer and hidden_layer is not None: 
+        if hidden_layer > 0 and hidden_layer is not None: 
             print(red('Warning: Using Hidden Layer'))
             self.hidden_layer = tf.keras.Sequential([
                 tf.keras.layers.Dropout(dropout_rates.hidden_1),
@@ -42,7 +42,7 @@ class QAModel(tf.keras.Model):
             return_dict=True, 
         )
         sequence_outputs = backbone_outputs.last_hidden_state
-        if self.hidden_layer is not None: 
+        if self.hidden_layer > 0 and self.hidden_layer is not None: 
             hidden_outputs = self.hidden_layer(sequence_outputs)
             sequence_outputs = tf.concat([sequence_outputs, hidden_outputs], axis=-1)
         start_logits = self.start_out(sequence_outputs)
