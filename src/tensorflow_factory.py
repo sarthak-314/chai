@@ -75,18 +75,15 @@ def get_time_stopping_callback(max_train_hours):
     )
 
 def get_wandb_callback(common_kwargs):
-    try: 
-        # TODO: Add training data, or remove log grads
-        from wandb.keras import WandbCallback
-        return WandbCallback(
-            monitor=common_kwargs['monitor'], 
-            verbose=0, mode=common_kwargs['mode'], 
-        #     save_weights_only=True, 
-        #     log_gradients=False, 
-        )
-    except Exception as e: 
-        print('Skipping the wandb callback. Does fukng nit: ', e)
-    
+    # TODO: Add training data, or remove log grads
+    from wandb.keras import WandbCallback
+    return WandbCallback(
+        monitor=common_kwargs['monitor'], 
+        verbose=0, mode=common_kwargs['mode'], 
+    #     save_weights_only=True, 
+    #     log_gradients=False, 
+    )
+
 
 def get_reduce_lr_on_plateau(patience, factor, common_kwargs): 
     print(f'reducing lr by {factor} if metric does not improve within {patience} epochs')
@@ -126,7 +123,10 @@ def callbacks_factory(callbacks):
         callbacks_list.append(
         get_reduce_lr_on_plateau(callbacks.reduce_lr_patience, callbacks.reduce_lr_factor, callbacks.common_kwargs)) 
     if 'wandb_callback' in callbacks and callbacks.wandb_callback: 
-        callbacks_list.append(get_wandb_callback(callbacks.common_kwargs))
+        try: 
+            callbacks_list.append(get_wandb_callback(callbacks.common_kwargs))
+        except Exception as e:
+            print(f'Skipping wandb callback coz:', e) 
     if 'use_tqdm_bar' in callbacks and callbacks.use_tqdm_bar: 
         callbacks_list.append(get_tqdm_bar_callback())
     if 'terminate_on_nan' in callbacks and callbacks.terminate_on_nan: 
