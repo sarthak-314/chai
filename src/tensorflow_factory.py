@@ -75,6 +75,7 @@ def get_time_stopping_callback(max_train_hours):
     )
 
 def get_wandb_callback(common_kwargs):
+    # TODO: Add training data, or remove log grads
     from wandb.keras import WandbCallback
     return WandbCallback(
         monitor=common_kwargs['monitor'], 

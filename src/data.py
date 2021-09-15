@@ -232,7 +232,7 @@ class HuggingfaceDataModule:
         for dataset_name in external_datasets: 
             if (cache_path/dataset_name).exists() and not self.force: 
                 print(f'Loading {dataset_name} from cache')
-                processed_dataset = datasets.Dataset.load_from_disk(dataset_name)
+                processed_dataset = datasets.Dataset.load_from_disk(str(cache_path/dataset_name))
             else: 
                 # Build Raw Dataset
                 raw_dataset = self.load_external_dataset(dataset_name)
@@ -495,7 +495,7 @@ class TFDataModule:
         self.train_samples = len(hf_dataset_train)
         self.valid_samples = len(hf_dataset_valid)
         print('Number of train features: ', self.train_samples)
-        print('Number of train features: ', self.valid_samples)
+        print('Number of valid features: ', self.valid_samples)
         
         self.tensor_keys = tensor_keys
         self.label_keys = label_keys
