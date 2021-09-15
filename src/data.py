@@ -9,7 +9,8 @@ import os
 
 import datasets
 from datasets import concatenate_datasets
-from utils.core import red, blue, green
+from src.utils.core import red, blue, green
+
 class CompetitionDataModule: 
     """
     Wrapper class for competition related QA dataframes
@@ -179,7 +180,8 @@ class CompetitionDataModule:
             return row.context.find(row.answer_text) 
         df['answer_start'] = df.apply(func, axis=1)
         return df
-    
+
+
 
 class HuggingfaceDataModule: 
     """
@@ -279,7 +281,7 @@ class HuggingfaceDataModule:
         
     
     def load_external_dataset(self, dataset_name): 
-        if dataset_name  == ' tydiqa_goldp': 
+        if dataset_name  == 'tydiqa_goldp': 
             return self.load_splits('tydiqa', 'secondary_task')
         elif dataset_name == 'squad_v2': 
             return self.load_splits('squad_v2')
