@@ -18,12 +18,13 @@ class CompetitionDataModule:
     - Add special tokens, transform into goldP + uniform negative 
     """
     def __init__(
-        self, df_dir, fold, 
+        self, df_dir, fold, versions=[],  
         word_counts=None, context_lengths=None, 
         word_count_tokens_position=None, context_length_tokens_position=None, 
     ): 
         self.df_dir = df_dir 
         self.fold = fold
+        self.versions = versions
         
         self.word_counts = word_counts 
         self.context_lengths = context_lengths 
@@ -34,20 +35,25 @@ class CompetitionDataModule:
     
     # --- PUBLIC API ---
     def prepare_original_dataframe(
-        self, transformation='goldp', min_paragraph_len=64, 
-    ): 
+        self, goldp_min_para_len=128, 
+        original_skip_duplicate_ans_para=False, 
+    ):
         start_time = time()
         df = pd.read_csv(self.df_dir/'comp_org.csv')
         df = self._clean_kaggle_noise(df)
         df = self.add_special_tokens(df)
         train, valid = df[df.fold!=self.fold], df[df.fold==self.fold]
-        if transformation == 'goldp': 
-            print('Making a goldp and a uniform negative dataframe from original dataframe')
+        if 'goldp' in self.versions: 
+            print(blue('GoldP found in competition dataframe versions. Converting to goldp'))
             gold = self.convert_to_goldp(train)
-            negative = self.convert_to_uniform_negative(train, min_paragraph_len)
+            negative = self.convert_to_uniform_negative(train, goldp_min_para_len)
             train = pd.concat([gold, negative])
-        
+        if 'original' in self.versions: 
+            print(blue('Original dataframe found in competition dataframe versions'))
+            org_train = df[df.fold!=self.fold]
+            train = pd.concat([train, org_train])
         print(colored(time()-start_time, 'blue'), 'seconds to prepare original dataframe')
+        print('train, valid: ', len(train), len(valid))
         return train, valid
     
     
