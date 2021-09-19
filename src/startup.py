@@ -121,7 +121,7 @@ def heading(title, level=3):
     except Exception as e: 
         print(e)
 
-def display_hparams(hp): 
+def display_hp(hp): 
     heading('Hyperparameters')
     for key, value in hp.items(): 
         if isinstance(value, omegaconf.dictconfig.DictConfig):
@@ -133,18 +133,18 @@ def display_hparams(hp):
             print()
         else:
             print(colored(key+':', 'red'), colored(value, 'blue'))
-    
+
+
 from IPython.core.magic import register_line_cell_magic
 @register_line_cell_magic
-def hyperparameters(line, cell):
+def hyperparameters(_, cell):
     'Magic command to write hyperparameters into a yaml file and load it with hydra'
-    print(f'Writing the hyperparameters to {line}')
-    with open(line, 'w') as f:
+    hp_file = 'hyperparameters.yaml'
+    with open(hp_file, 'w') as f:
         f.write(cell.format(**globals()))
-    hyperparameters_config = OmegaConf.load(line)
+    hyperparameters_config = OmegaConf.load(hp_file)
     get_ipython().user_ns['HP'] = hyperparameters_config
     print('Hyperparameters loaded in the variable HP')
-    display_hparams(hyperparameters_config)
 
 
 # Competition Specific Constants & Functions

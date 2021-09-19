@@ -9,11 +9,13 @@ def lr_scheduler_factory(lr_scheduler_kwargs):
     if isinstance(lr_scheduler_kwargs, float): 
         print(colored('Using constant learning rate', 'yellow'))
         return lr_scheduler_kwargs
+    print('Warning: Be careful with ExponentialCyclicalLearningRate')
     lr_scheduler = tfa.optimizers.ExponentialCyclicalLearningRate(
         initial_learning_rate=lr_scheduler_kwargs['init_lr'], 
         maximal_learning_rate=lr_scheduler_kwargs['max_lr'], 
         step_size=lr_scheduler_kwargs['step_size'], 
         gamma=lr_scheduler_kwargs['gamma'], 
+        scale_mode='cycle',
     )
     return lr_scheduler
 
@@ -54,7 +56,7 @@ def get_model_checkpoint_callback(checkpoint_dir, checkpoint_file, common_kwargs
         print(f'Created the folder: {checkpoint_dir}')
         os.makedirs(checkpoint_dir)
     return tf.keras.callbacks.ModelCheckpoint(
-        filepath=checkpoint_dir/checkpoint_file,
+        filepath=str(checkpoint_dir/checkpoint_file),
         save_weights_only=True,
         save_best_only=True, 
         **common_kwargs, 
@@ -157,6 +159,3 @@ def get_load_locally():
 #     return tf.keras.callbacks.TensorBoard(
 #         log_dir=str(log_dir)
 #     )
-
-
-
