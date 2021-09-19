@@ -38,7 +38,7 @@ class QAModel(tf.keras.Model):
             print('No hidden layers')
             return None
         return tf.keras.Sequential([
-            tf.keras.Dense(x, activation=tfa.activations.mish, kernel_initializer=self._bert_initializer(0.2)) 
+            tf.keras.layers.Dense(x, activation=tfa.activations.mish, kernel_initializer=self._bert_initializer(0.2)) 
             for x in hidden_layers
         ], name='hidden_layer')
     
