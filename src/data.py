@@ -533,7 +533,7 @@ class TFDataModule:
     
     def prepare_datasets(self, batch_size, buffer_size=4096):
         print('Building datasets with batch size', blue(batch_size))
-        train_ds = self.train_ds_unbatched.repeat().shuffle(buffer_size).batch(batch_size, drop_remainder=True)
+        train_ds = self.train_ds_unbatched.shuffle(buffer_size, reshuffle_each_iteration=True).repeat().batch(batch_size)
         valid_ds = self.valid_ds_unbatched.batch(batch_size, drop_remainder=True) # drop_remainder to show shape
         
         train_steps, valid_steps = self.train_samples//batch_size+1, self.valid_samples//batch_size
