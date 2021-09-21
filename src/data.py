@@ -36,7 +36,9 @@ class CompetitionDataModule:
     # --- PUBLIC API ---
     def prepare_original_dataframe(
         self, goldp_min_para_len=128, 
+        goldp_positive_repeat=4, 
         original_skip_duplicate_ans_para=False, 
+        
     ):
         start_time = time()
         df = pd.read_csv(self.df_dir/'comp_org.csv')
@@ -47,6 +49,8 @@ class CompetitionDataModule:
             print(blue('GoldP found in competition dataframe versions. Converting to goldp'))
             gold = self.convert_to_goldp(train)
             negative = self.convert_to_uniform_negative(train, goldp_min_para_len)
+            gold = pd.concat([gold]*goldp_positive_repeat)
+            print(f'goldp positive: {len(gold)}, negative: {len(negative)}')
             train = pd.concat([gold, negative])
         if 'original' in self.versions: 
             print(blue('Original dataframe found in competition dataframe versions'))
